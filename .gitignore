@@ -1,0 +1,22 @@
+# Entornos virtuales (¡El más importante!)
+venv/
+.venv/
+env/
+
+# Caché de Python (Evita archivos temporales molestos)
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Base de datos local (Por si quedó algún rastro de SQLite)
+*.db
+*.sqlite3
+
+# Archivos ocultos del sistema operativo u editores
+.DS_Store
+.vscode/
+.idea/
+
+# Archivos de variables de entorno (Credenciales secretas)
+.env
