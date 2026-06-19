@@ -1,4 +1,30 @@
-# Logs
+# ============================================================================
+# METROLÍNEA INTELIGENTE - .GITIGNORE UNIFICADO (BACKEND & FRONTEND)
+# ============================================================================
+
+# --- ENTORNO DE BACKEND (PYTHON) ---
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Caché de Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Base de datos local
+*.db
+*.sqlite3
+
+# --- ENTORNO DE FRONTEND (NODE.JS / REACT) ---
+# Dependencias de Node
+node_modules/
+dist/
+dist-ssr/
+
+# Logs del sistema
 logs
 *.log
 npm-debug.log*
@@ -7,18 +33,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# --- CONFIGURACIONES GLOBALES Y EDITORES ---
 .DS_Store
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Archivos de variables de entorno (¡Seguridad Critica!)
+.env
+*.local
