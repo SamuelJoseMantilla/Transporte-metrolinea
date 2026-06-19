@@ -1,22 +1,48 @@
-# Entornos virtuales (¡El más importante!)
+# ============================================================================
+# METROLÍNEA INTELIGENTE - .GITIGNORE UNIFICADO (BACKEND & FRONTEND)
+# ============================================================================
+
+# --- ENTORNO DE BACKEND (PYTHON) ---
+# Entornos virtuales
 venv/
 .venv/
 env/
 
-# Caché de Python (Evita archivos temporales molestos)
+# Caché de Python
 **/__pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Base de datos local (Por si quedó algún rastro de SQLite)
+# Base de datos local
 *.db
 *.sqlite3
 
-# Archivos ocultos del sistema operativo u editores
+# --- ENTORNO DE FRONTEND (NODE.JS / REACT) ---
+# Dependencias de Node
+node_modules/
+dist/
+dist-ssr/
+
+# Logs del sistema
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- CONFIGURACIONES GLOBALES Y EDITORES ---
 .DS_Store
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Archivos de variables de entorno (Credenciales secretas)
+# Archivos de variables de entorno (¡Seguridad Critica!)
 .env
+*.local
