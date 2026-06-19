@@ -1,39 +1,39 @@
-# backend/ai/predictor.py
-import joblib
-import os
-import pandas as pd
+# backend/database/models.py
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Boolean
 from datetime import datetime
+from database.connection import Base
 
-# Ruta exacta hacia el modelo que te envió tu compañero
-MODEL_PATH = 'database/../ai/modelo_eta.pkl' # O 'backend/ai/modelo_eta.pkl' dependiendo de dónde lances uvicorn
+class RouteModel(Base):
+    __tablename__ = "routes"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(20), unique=True, nullable=False)
+    description = Column(String, nullable=True)
+    color = Column(String(7), default="#3B82F6")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
-def predecir_tiempo_paradero(ruta: str, paradero: str, clima: str = "Despejado") -> float:
-    """
-    Usa el modelo binario de tu compañero para predecir cuántos minutos se demorará el bus.
-    """
-    if not os.path.exists('ai/modelo_eta.pkl') and not os.path.exists('backend/ai/modelo_eta.pkl'):
-        # Salvavidas por si el archivo .pkl no se encuentra en la ruta
-        return 12.5 
-    
-    # Encontrar la ruta real del archivo vayas donde vayas
-    actual_path = 'backend/ai/modelo_eta.pkl' if os.path.exists('backend/ai/modelo_eta.pkl') else 'ai/modelo_eta.pkl'
-    
-    # 1. Cargar el modelo entrenado por tu compañero
-    modelo = joblib.load(actual_path)
-    
-    # 2. Capturar la hora actual de Bucaramanga de forma automática
-    hora_actual = datetime.now().hour + (datetime.now().minute / 60.0)
-    
-    # 3. Formatear los datos de entrada exactamente como el modelo los espera
-    # Ajusta los nombres de las columnas según cómo los entrenó tu compañero (ej: 'ruta', 'clima', etc.)
-    datos_entrada = pd.DataFrame([{
-        'ruta': ruta,
-        'paradero_destino': paradero,
-        'hora_del_dia': hora_actual,
-        'clima': clima
-    }])
-    
-    # 4. Hacer la predicción predictiva
-    prediccion = modelo.predict(datos_entrada)
-    
-    return round(float(prediccion[0]), 1)
+class BusModel(Base):
+    __tablename__ = "buses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    plate_number = Column(String(20), unique=True, index=True, nullable=False)
+    internal_code = Column(String(30), unique=True, nullable=False)
+    capacity = Column(Integer, default=40)
+    is_active = Column(Boolean, default=True)
+    route_id = Column(Integer, ForeignKey("routes.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
+class BusLocationModel(Base):
+    __tablename__ = "bus_locations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    bus_id = Column(Integer, ForeignKey("buses.id", ondelete="CASCADE"), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    speed_kmh = Column(Float, default=0.0)
+    heading = Column(Float, default=0.0)
+    recorded_at = Column(DateTime, default=datetime.utcnow)
