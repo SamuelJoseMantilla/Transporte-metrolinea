@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: metrolinea_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: metrolinea
+      POSTGRES_PASSWORD: metrolinea_secret
+      POSTGRES_DB: metrolinea_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metrolinea -d metrolinea_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - metrolinea
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: metrolinea_pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@metrolinea.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - metrolinea
+
+volumes:
+  pgdata:
+
+networks:
+  metrolinea:
+    driver: bridge
