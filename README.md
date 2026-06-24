@@ -87,4 +87,4 @@ Capturas de pantalla
 [Rutas]                → src/assets/screenshots/routes.png
 Licencia
 Proyecto académico — Reto de movilidad inteligente.
-Proyecto académico — Reto de movilidad inteligente..
+Proyecto académico — Reto de movilidad inteligente...
